@@ -4,20 +4,22 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from utils import read_speeds_from_file, populate_table
 from graph import create_plot
 
-giroRuota = 1.552  # Distanza percorsa in ogni giro ruota in metri
 
-# Inizializzazione delle variabili speeds
+# giro ruota in metri
+giroRuota = 1.52  
+
+# Inizializzazione dei vettori delle velocità dai file
 speeds_1 = []
 speeds_2 = []
 
-# Funzione per aggiornare i dati dal primo file selezionato
+# Funzione per aggiornare speed_1 e table_1 dal primo file inserito
 def update_data_1(file_path):
     global speeds_1
     speeds_1 = read_speeds_from_file(file_path)
     populate_table(table_1, speeds_1, giroRuota)
     update_plot()
 
-# Funzione per aggiornare i dati dal secondo file selezionato
+# Funzione per aggiornare speed_2 e table_2 dal secondo file inserito
 def update_data_2(file_path):
     global speeds_2, table_2, table_frame_2
     speeds_2 = read_speeds_from_file(file_path)
@@ -30,8 +32,8 @@ def update_data_2(file_path):
         table_2.heading("Metri", text="meters")
         table_2.heading("Velocità", text="Speed")
         
-        table_2.column("Metri", width=150)
-        table_2.column("Velocità", width=150)
+        table_2.column("Metri", width=100)
+        table_2.column("Velocità", width=100)
         
         table_2.bind('<ButtonRelease-1>', on_table_click)
         
@@ -149,13 +151,13 @@ def update_table(table, index):
 
 # Creazione della finestra principale
 root = tk.Tk()
-root.title("CAVEDANO SPEED GRAPH")
-
-# Creazione della barra dei menu
+root.title("Speed Graph")
+root.minsize(1100 , 700)
+# aggiunta barra dei menu
 menu_bar = tk.Menu(root)
 root.config(menu=menu_bar)
 
-# Aggiunta del menu File
+# Aggiunta della voce "File" nella barra dei menu
 file_menu = tk.Menu(menu_bar, tearoff=0)
 menu_bar.add_cascade(label="File", menu=file_menu)
 file_menu.add_command(label="Open", command=open_file_1)
@@ -165,33 +167,32 @@ file_menu.add_command(label="Sovrapponi file", command=open_file_2)
 style = ttk.Style()
 
 # Impostazione dello stile per la tabella 1 (sfondo blu)
-style.configure("Blue.Treeview", background="#ADD8E6", foreground="black", rowheight=30, font=('Arial', 12))
-style.configure("Orange.Treeview", background="#FFD700", foreground="black", rowheight=30, font=('Arial', 12))
-
+style.configure("Blue.Treeview", background="#ADD8E6", foreground="black", rowheight=30, font=('Verdana', 10))
+style.configure("Orange.Treeview", background="#FFD700", foreground="black", rowheight=30, font=('Verdana', 10))
 
 table_frame_1 = tk.Frame(root)
 table_frame_1.pack(side=tk.RIGHT, fill=tk.BOTH, expand=False, padx=10, pady=10)
 
+# impostazioni tabella 1
 table_1 = ttk.Treeview(table_frame_1, columns=("Metri", "Velocità"), show="headings", style="Blue.Treeview")
 table_1.heading("Metri", text="meters")
-table_1.heading("Velocità", text="Speed")
+table_1.heading("Velocità", text="speed [Km/h]")
+table_1.column("Metri", width=100 )
+table_1.column("Velocità", width=100)
 
-# Regola la larghezza delle colonne
-table_1.column("Metri", width=150 )
-table_1.column("Velocità", width=150)
-
-# Aggiunta del gestore di eventi per il click sulla tabella
+# gestore di eventi per il click sulla tabella
 table_1.bind('<ButtonRelease-1>', on_table_click)
 
-# Inizializzazione della seconda tabella e del suo frame come None
+# Inizializzazione della seconda tabella e del suo frame come None (aggiuronati poi nella funzione)
 table_2 = None
 table_frame_2 = None
 
-# Creazione del grafico con griglia visibile
+# Creazione del grafico
 fig, ax = create_plot(speeds_1, giroRuota)
+
+# Impostazioni della griglia principale e secondaria
 ax.grid(True)
 
-# Creazione del canvas per il grafico
 canvas = FigureCanvasTkAgg(fig, master=root)
 canvas.draw()
 canvas.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
