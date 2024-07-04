@@ -35,7 +35,7 @@ def update_data_2(file_path):
         table_2.column("Metri", width=100)
         table_2.column("Velocità", width=100)
         
-        table_2.bind('<ButtonRelease-1>', on_table_click)
+        table_2.bind('<ButtonRelease-1>', on_table2_click)
         
         table_2.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
@@ -66,7 +66,7 @@ def open_file_2():
         update_data_2(file_path)
 
 # Funzione per gestire il click sulla tabella
-def on_table_click(event):
+def on_table1_click(event):
     selected_row_1 = table_1.focus()
     selected_row_2 = table_2.focus() if table_2 else None
     if selected_row_1:
@@ -76,16 +76,22 @@ def on_table_click(event):
             meters = float(values_1[0])  # Converti in float
             speed = float(values_1[1])
             update_table(table_1, index)
-            update_table(table_2, index)
+            update_table(table_2, index) if table_2 else None
             highlight_point(meters, speed)
+    
+
+def on_table2_click(event):
+    selected_row_1 = table_1.focus()
+    selected_row_2 = table_2.focus() if table_2 else None
+    
     if selected_row_2:
         values_2 = table_2.item(selected_row_2)['values']
         if values_2:
             index = table_2.index(selected_row_2)  # Ottieni l'indice della riga selezionata
             meters = float(values_2[0])  # Converti in float
             speed = float(values_2[1])
-            update_table(table_1, index)
             update_table(table_2, index)
+            update_table(table_1, index)
             highlight_point(meters, speed)
 
 # Funzione per gestire il click sul grafico
@@ -181,7 +187,7 @@ table_1.column("Metri", width=100 )
 table_1.column("Velocità", width=100)
 
 # gestore di eventi per il click sulla tabella
-table_1.bind('<ButtonRelease-1>', on_table_click)
+table_1.bind('<ButtonRelease-1>', on_table1_click)
 
 # Inizializzazione della seconda tabella e del suo frame come None (aggiuronati poi nella funzione)
 table_2 = None

@@ -24,7 +24,7 @@ def create_plot(speeds_1, distance_per_revolution, speeds_2=None):
     ax.yaxis.set_minor_locator(AutoMinorLocator())
 
     # Impostazioni della griglia principale
-    ax.grid(which='major', linestyle='-', linewidth='0.5', color='black')
+    ax.grid(which='major', linestyle='-', linewidth='0.7', color='gray')
 
     # Impostazioni della griglia secondaria
     ax.grid(which='minor', linestyle=':', linewidth='0.5', color='gray')
