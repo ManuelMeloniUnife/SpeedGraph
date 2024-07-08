@@ -14,7 +14,6 @@ def read_speeds_from_file(file_path):
                     continue
     return speeds
 
-
 def populate_table(table, speeds, distance_per_revolution):
     # Rimuovi tutte le righe esistenti nella tabella
     for item in table.get_children():

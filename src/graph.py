@@ -7,12 +7,12 @@ def create_plot(speeds_1, distance_per_revolution, speeds_2=None):
     y_1 = speeds_1
     
     fig, ax = plt.subplots(figsize=(5, 4), dpi=100)
-    ax.plot(x_1, y_1, marker='o', linestyle='-', markersize=3.5)
+    ax.plot(x_1, y_1, marker='o', linestyle='-', markersize=1.5)
     
     if speeds_2 is not None:
         x_2 = [(i + 1) * distance_per_revolution for i in range(len(speeds_2))]
         y_2 = speeds_2
-        ax.plot(x_2, y_2, marker='o', linestyle='-', markersize=3.5, color='orange')
+        ax.plot(x_2, y_2, marker='o', linestyle='-', markersize=1.5, color='orange')
     
     ax.set_xlabel('DISTANCE [m]')
     ax.set_ylabel('SPEED [km/h]')
@@ -24,7 +24,7 @@ def create_plot(speeds_1, distance_per_revolution, speeds_2=None):
     ax.yaxis.set_minor_locator(AutoMinorLocator())
 
     # Impostazioni della griglia principale
-    ax.grid(which='major', linestyle='-', linewidth='0.7', color='gray')
+    ax.grid(which='major', linestyle='-', linewidth='0.6', color='gray')
 
     # Impostazioni della griglia secondaria
     ax.grid(which='minor', linestyle=':', linewidth='0.5', color='gray')

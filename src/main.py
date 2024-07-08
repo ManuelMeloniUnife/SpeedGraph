@@ -30,7 +30,7 @@ def update_data_2(file_path):
         
         table_2 = ttk.Treeview(table_frame_2, columns=("Metri", "Velocità"), show="headings", style="Orange.Treeview")
         table_2.heading("Metri", text="meters")
-        table_2.heading("Velocità", text="Speed")
+        table_2.heading("Velocità", text="speed [Km/h]")
         
         table_2.column("Metri", width=100)
         table_2.column("Velocità", width=100)
@@ -50,7 +50,7 @@ def update_plot():
     canvas.get_tk_widget().pack_forget()
     canvas = FigureCanvasTkAgg(fig, master=root)
     canvas.draw()
-    canvas.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
+    canvas.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=5, pady=5)
     fig.canvas.mpl_connect('button_press_event', on_plot_click)
 
 # Funzione per aprire il primo file
@@ -143,6 +143,8 @@ def highlight_point_from_plot_click(meters, speed):
         line.remove()
 
     ax.axvline(x=meters, color='red', linestyle='-', linewidth=0.7, label='highlight_vline')    
+    ax.axhline(y=speed, color='red', linestyle='-', linewidth=0.7, label='highlight_hline')    
+
     # Aggiorna il grafico
     canvas.draw()
 
