@@ -4,16 +4,21 @@ Matplotlib: 3.9.0
 Freetype: 2.6.1
 rootdir: C:\Users\manue\Documents\speedgraph
 plugins: cov-5.0.0, mpl-0.17.0
-collected 9 items
+collected 9 items / 1 error
 
-tests\unit\test_graph.py ..                                              [ 22%]
-tests\unit\test_utils.py .......                                         [100%]
-
-============================== warnings summary ===============================
-tests/unit/test_graph.py::test_create_plot_single_speed
-tests/unit/test_graph.py::test_create_plot_dual_speed
-  C:\Users\manue\Documents\speedgraph\src\graph.py:19: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
-    ax.legend()
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================== 9 passed, 2 warnings in 1.44s ========================
+=================================== ERRORS ====================================
+__________________ ERROR collecting tests/unit/test_main.py ___________________
+ImportError while importing test module 'C:\Users\manue\Documents\speedgraph\tests\unit\test_main.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\anaconda3\envs\sg_win64\lib\importlib\__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests\unit\test_main.py:6: in <module>
+    from src.main import root, create_plot, clear_tables, open_file_1, open_file_2, update_data_1, update_data_2, update_plot, on_table1_click, on_table2_click, on_plot_click
+src\main.py:4: in <module>
+    from graph import create_plot
+E   ModuleNotFoundError: No module named 'graph'
+=========================== short test summary info ===========================
+ERROR tests/unit/test_main.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+============================== 1 error in 1.14s ===============================

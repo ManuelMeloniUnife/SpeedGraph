@@ -1,8 +1,12 @@
+# pragma: no cover
+from utils import read_speeds_from_file, populate_table
+from graph import create_plot
+
+# Rimuovi pragma: no cover per il resto del codice che vuoi testare
+
 import tkinter as tk
 from tkinter import ttk, filedialog
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from utils import read_speeds_from_file, populate_table
-from graph import create_plot
 
 
 # giro ruota in metri
@@ -199,7 +203,7 @@ file_menu = tk.Menu(menu_bar, tearoff=0)
 menu_bar.add_cascade(label="File", menu=file_menu)
 file_menu.add_command(label="Open", command=open_file_1)
 file_menu.add_command(label="Sovrapponi file", command=open_file_2)
-file_menu.add_command(label="Clear tables", command=clear_tables)  # Aggiunta della voce "Clear tables"
+file_menu.add_command(label="Clear tables", command=clear_tables)  
 
 # Creazione della tabella con bordi visibili alle celle
 style = ttk.Style()
