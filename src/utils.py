@@ -8,20 +8,23 @@ def read_speeds_from_file(file_path):
                 start_reading = True
                 continue
             if start_reading:
+                # Rimuovi il primo punto se esiste
+                if ',' in line and '.' in line:
+                    point_index = line.find('.')
+                    line = line[:point_index] + line[point_index+1:]
                 try:
                     speeds.append(float(line.replace(',', '.')))
                 except ValueError:
                     continue
     return speeds
 
+
 def populate_table(table, speeds, distance_per_revolution):
-    # Rimuovi tutte le righe esistenti nella tabella
     for item in table.get_children():
         table.delete(item)
     
     for i, speed in enumerate(speeds):
         meters = (i + 1) * distance_per_revolution
-        # Formatta i valori a 2 decimali
         meters_formatted = f"{meters:.2f}"
         speed_formatted = f"{speed:.2f}"
         table.insert('', 'end', values=(meters_formatted, speed_formatted))

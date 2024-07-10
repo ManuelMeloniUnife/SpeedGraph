@@ -1,0 +1,11 @@
+Name                                    Stmts   Miss  Cover
+-----------------------------------------------------------
+src\__init__.py                             0      0   100%
+src\graph.py                               31      0   100%
+src\utils.py                               26      1    96%
+tests\integration\test_integration.py      17      5    71%
+tests\unit\test_graph.py                   20      1    95%
+tests\unit\test_main.py                     0      0   100%
+tests\unit\test_utils.py                   51      0   100%
+-----------------------------------------------------------
+TOTAL                                     145      7    95%

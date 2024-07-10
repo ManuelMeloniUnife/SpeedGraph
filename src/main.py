@@ -69,6 +69,7 @@ def open_file_2():
 def on_table1_click(event):
     selected_row_1 = table_1.focus()
     selected_row_2 = table_2.focus() if table_2 else None
+
     if selected_row_1:
         values_1 = table_1.item(selected_row_1)['values']
         if values_1:
@@ -79,7 +80,6 @@ def on_table1_click(event):
             update_table(table_2, index) if table_2 else None
             highlight_point(meters, speed)
     
-
 def on_table2_click(event):
     selected_row_1 = table_1.focus()
     selected_row_2 = table_2.focus() if table_2 else None
@@ -157,11 +157,40 @@ def update_table(table, index):
         table.focus(item)
         table.see(item)
 
-# Creazione della finestra principale
+# Funzione per ripristinare le tabelle e il grafico allo stato iniziale
+def clear_tables():
+    global speeds_1, speeds_2, table_1, table_2, table_frame_2, fig, ax, canvas
+    
+    speeds_1 = []
+    speeds_2 = []
+    
+    # Ripristina la tabella 1
+    for item in table_1.get_children():
+        table_1.delete(item)
+    
+    # Ripristina la tabella 2 se esiste
+    if table_2:
+        for item in table_2.get_children():
+            table_2.delete(item)
+        table_frame_2.pack_forget()
+        table_2 = None  # Resetta anche la variabile globale table_2
+        table_frame_2 = None  # Resetta anche la variabile globale table_frame_2
+    
+    # Ripristina il grafico
+    fig, ax = create_plot(speeds_1, giroRuota)
+    ax.grid(True)
+    canvas.get_tk_widget().pack_forget()
+    canvas = FigureCanvasTkAgg(fig, master=root)
+    canvas.draw()
+    canvas.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
+    fig.canvas.mpl_connect('button_press_event', on_plot_click)
+
+
 root = tk.Tk()
 root.title("Speed Graph")
 root.minsize(1100 , 700)
-# aggiunta barra dei menu
+
+# Aggiunta della barra dei menu
 menu_bar = tk.Menu(root)
 root.config(menu=menu_bar)
 
@@ -170,6 +199,7 @@ file_menu = tk.Menu(menu_bar, tearoff=0)
 menu_bar.add_cascade(label="File", menu=file_menu)
 file_menu.add_command(label="Open", command=open_file_1)
 file_menu.add_command(label="Sovrapponi file", command=open_file_2)
+file_menu.add_command(label="Clear tables", command=clear_tables)  # Aggiunta della voce "Clear tables"
 
 # Creazione della tabella con bordi visibili alle celle
 style = ttk.Style()
@@ -181,17 +211,17 @@ style.configure("Orange.Treeview", background="#FFD700", foreground="black", row
 table_frame_1 = tk.Frame(root)
 table_frame_1.pack(side=tk.RIGHT, fill=tk.BOTH, expand=False, padx=10, pady=10)
 
-# impostazioni tabella 1
+# Impostazione delle colonne della tabella 1
 table_1 = ttk.Treeview(table_frame_1, columns=("Metri", "Velocità"), show="headings", style="Blue.Treeview")
 table_1.heading("Metri", text="meters")
 table_1.heading("Velocità", text="speed [Km/h]")
-table_1.column("Metri", width=100 )
+table_1.column("Metri", width=100)
 table_1.column("Velocità", width=100)
 
-# gestore di eventi per il click sulla tabella
+# Gestore di eventi per il click sulla tabella 1
 table_1.bind('<ButtonRelease-1>', on_table1_click)
 
-# Inizializzazione della seconda tabella e del suo frame come None (aggiuronati poi nella funzione)
+# Inizializzazione della seconda tabella e del suo frame come None (aggiornati poi nella funzione)
 table_2 = None
 table_frame_2 = None
 
