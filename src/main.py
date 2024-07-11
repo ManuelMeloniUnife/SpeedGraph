@@ -1,8 +1,6 @@
-# pragma: no cover
-from utils import read_speeds_from_file, populate_table
-from graph import create_plot
+from .utils import read_speeds_from_file, populate_table
+from .graph import create_plot
 
-# Rimuovi pragma: no cover per il resto del codice che vuoi testare
 
 import tkinter as tk
 from tkinter import ttk, filedialog

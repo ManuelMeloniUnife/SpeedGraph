@@ -3,7 +3,9 @@ import tkinter as tk
 from tkinter import ttk
 from unittest.mock import patch, MagicMock
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from src import utils, graph, main
+from src.main import *
+import src.utils as utils
+import src.graph as graph
 
 @pytest.fixture(scope="module")
 def setup_root():
