@@ -1,5 +1,5 @@
-from .utils import read_speeds_from_file, populate_table
-from .graph import create_plot
+from utils import read_speeds_from_file, populate_table
+from graph import create_plot
 
 
 import tkinter as tk
@@ -187,61 +187,65 @@ def clear_tables():
     canvas.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
     fig.canvas.mpl_connect('button_press_event', on_plot_click)
 
+def main():
+    global root, canvas, table_1, fig, ax, table_2, table_frame_2
+    root = tk.Tk()
+    root.title("Speed Graph")
+    root.minsize(1100 , 700)
 
-root = tk.Tk()
-root.title("Speed Graph")
-root.minsize(1100 , 700)
+    # Aggiunta della barra dei menu
+    menu_bar = tk.Menu(root)
+    root.config(menu=menu_bar)
 
-# Aggiunta della barra dei menu
-menu_bar = tk.Menu(root)
-root.config(menu=menu_bar)
+    # Aggiunta della voce "File" nella barra dei menu
+    file_menu = tk.Menu(menu_bar, tearoff=0)
+    menu_bar.add_cascade(label="File", menu=file_menu)
+    file_menu.add_command(label="Open", command=open_file_1)
+    file_menu.add_command(label="Sovrapponi file", command=open_file_2)
+    file_menu.add_command(label="Clear tables", command=clear_tables)  
 
-# Aggiunta della voce "File" nella barra dei menu
-file_menu = tk.Menu(menu_bar, tearoff=0)
-menu_bar.add_cascade(label="File", menu=file_menu)
-file_menu.add_command(label="Open", command=open_file_1)
-file_menu.add_command(label="Sovrapponi file", command=open_file_2)
-file_menu.add_command(label="Clear tables", command=clear_tables)  
+    # Creazione della tabella con bordi visibili alle celle
+    style = ttk.Style()
 
-# Creazione della tabella con bordi visibili alle celle
-style = ttk.Style()
+    # Impostazione dello stile per la tabella 1 (sfondo blu)
+    style.configure("Blue.Treeview", background="#ADD8E6", foreground="black", rowheight=30, font=('Verdana', 10))
+    style.configure("Orange.Treeview", background="#FFD700", foreground="black", rowheight=30, font=('Verdana', 10))
 
-# Impostazione dello stile per la tabella 1 (sfondo blu)
-style.configure("Blue.Treeview", background="#ADD8E6", foreground="black", rowheight=30, font=('Verdana', 10))
-style.configure("Orange.Treeview", background="#FFD700", foreground="black", rowheight=30, font=('Verdana', 10))
+    table_frame_1 = tk.Frame(root)
+    table_frame_1.pack(side=tk.RIGHT, fill=tk.BOTH, expand=False, padx=10, pady=10)
 
-table_frame_1 = tk.Frame(root)
-table_frame_1.pack(side=tk.RIGHT, fill=tk.BOTH, expand=False, padx=10, pady=10)
+    # Impostazione delle colonne della tabella 1
+    table_1 = ttk.Treeview(table_frame_1, columns=("Metri", "Velocità"), show="headings", style="Blue.Treeview")
+    table_1.heading("Metri", text="meters")
+    table_1.heading("Velocità", text="speed [Km/h]")
+    table_1.column("Metri", width=100)
+    table_1.column("Velocità", width=100)
 
-# Impostazione delle colonne della tabella 1
-table_1 = ttk.Treeview(table_frame_1, columns=("Metri", "Velocità"), show="headings", style="Blue.Treeview")
-table_1.heading("Metri", text="meters")
-table_1.heading("Velocità", text="speed [Km/h]")
-table_1.column("Metri", width=100)
-table_1.column("Velocità", width=100)
+    # Gestore di eventi per il click sulla tabella 1
+    table_1.bind('<ButtonRelease-1>', on_table1_click)
 
-# Gestore di eventi per il click sulla tabella 1
-table_1.bind('<ButtonRelease-1>', on_table1_click)
+    # Inizializzazione della seconda tabella e del suo frame come None (aggiornati poi nella funzione)
+    table_2 = None
+    table_frame_2 = None
 
-# Inizializzazione della seconda tabella e del suo frame come None (aggiornati poi nella funzione)
-table_2 = None
-table_frame_2 = None
+    # Creazione del grafico
+    fig, ax = create_plot(speeds_1, giroRuota)
 
-# Creazione del grafico
-fig, ax = create_plot(speeds_1, giroRuota)
+    # Impostazioni della griglia principale e secondaria
+    ax.grid(True)
 
-# Impostazioni della griglia principale e secondaria
-ax.grid(True)
+    canvas = FigureCanvasTkAgg(fig, master=root)
+    canvas.draw()
+    canvas.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-canvas = FigureCanvasTkAgg(fig, master=root)
-canvas.draw()
-canvas.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
+    # Connette l'evento di click del mouse al grafico
+    cid = fig.canvas.mpl_connect('button_press_event', on_plot_click)
 
-# Connette l'evento di click del mouse al grafico
-cid = fig.canvas.mpl_connect('button_press_event', on_plot_click)
+    # Posizionamento della tabella nella finestra
+    table_1.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-# Posizionamento della tabella nella finestra
-table_1.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+    # Avvio del loop principale di Tkinter
+    root.mainloop()
 
-# Avvio del loop principale di Tkinter
-root.mainloop()
+if __name__ == "__main__":
+    main()

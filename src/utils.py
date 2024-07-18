@@ -4,7 +4,7 @@ def read_speeds_from_file(file_path):
     with open(file_path, 'r') as file:
         for line in file:
             line = line.strip()
-            if line == "0,00":
+            if (line == "0,00") or (line == "00,00") or (line == "00,0") or (line == "0,00"):
                 start_reading = True
                 continue
             if start_reading:
